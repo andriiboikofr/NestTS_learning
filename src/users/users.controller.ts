@@ -25,12 +25,12 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(
+  async findOne(
     @Param('id')
-    id: number,
+    id: string,
     @Res() response: FastifyReply,
   ) {
-    const user = this.usersService.findOne(id);
+    const user = await this.usersService.findOne(id);
     return response.send({ success: true, result: user });
   }
 

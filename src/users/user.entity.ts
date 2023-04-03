@@ -6,13 +6,13 @@ import {
     UpdateDateColumn,
     OneToMany,
 } from "typeorm";
-//import {Post} from "./post";
-//import {Comment} from "./comment";
+import { Post } from "../posts/post.entity";
+import { Comment } from "../comments/comment.entity";
 
 @Entity()
 export class User{
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column()
     firstName!: string;
@@ -29,11 +29,11 @@ export class User{
     @Column({default: "customer"})
     role!: string;
 
-    //@OneToMany((_type)=>Post, (post: Post)=>post.user)
-    //posts!: Array<Post>;
+    @OneToMany((_type)=>Post, (post: Post)=>post.user)
+    posts!: Array<Post>;
 
-    //@OneToMany((_type)=>Comment, (comment: Comment)=>comment.user)
-    //comments!: Array<Comment>;
+    @OneToMany((_type)=>Comment, (comment: Comment)=>comment.user)
+    comments!: Array<Comment>;
 
     @CreateDateColumn()
     createdAt!: Date;
