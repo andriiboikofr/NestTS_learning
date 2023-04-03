@@ -15,6 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.POSTGRES_DB || 'postgres',
       entities: [],
       synchronize: true,
+      autoLoadEntities: true
     }),
     UsersModule,
   ],

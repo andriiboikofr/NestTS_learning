@@ -1,15 +1,26 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  Req,
+  Res
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './interfaces/user.interface';
-
+import { User } from './user.entity';
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  async findAll(): Promise<User[]> {
+  @Get('/')
+  public async findAll(): Promise<User[]>{
+    console.log("Find all was initialized");
+    //console.log(`The users are: ${request.method} and ${request.url}`); //GET /users
     return this.usersService.findAll();
   }
 
@@ -17,7 +28,15 @@ export class UsersController {
   findOne(
     @Param('id')
     id: number,
+    @Res() response: FastifyReply,
   ) {
-    // get by ID logic
+    const user = this.usersService.findOne(id);
+    return response.send({ success: true, result: user });
+  }
+
+  @Post('create')
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    const user = this.usersService.create(createUserDto);
+    return user;
   }
 }
